@@ -7,7 +7,10 @@ export const readJsonStream = async function* (
   while (true) {
     const { done, value } = await reader.read()
     if (done) {
-      return
+      if (!unhandled) {
+        yield unhandled
+      }
+      break
     }
     const text = decoder.decode(value)
     unhandled += text
